@@ -1,0 +1,12 @@
+package: hzHouse
+import:
+- package: github.com/astaxie/beego
+  version: ^1.11.1
+- package: github.com/tsuna/gohbase
+  subpackages:
+  - hrpc
+testImport:
+- package: github.com/smartystreets/goconvey
+  version: ^1.6.3
+  subpackages:
+  - convey
