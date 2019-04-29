@@ -3,6 +3,7 @@ package controllers
 import (
 	"hzHouse/common"
 	"hzHouse/hbaseutil"
+	"hzHouse/mysqlutil"
 
 	"github.com/astaxie/beego"
 )
@@ -22,6 +23,19 @@ func (this *HouseController) Post() {
 		return
 	}
 	obj = map[string]interface{}{"resultList": scanResults}
+	resObj.GetSuccessObj(0, "查询成功", obj)
+	this.Data["json"] = &resObj
+	this.ServeJSON()
+}
+
+type HouseInfoController struct {
+	beego.Controller
+}
+
+func (this *HouseInfoController) Post() {
+	secondHouses := mysqlutil.GetHouseList(0, 0)
+	obj := map[string]interface{}{ "secondHouseList": secondHouses }
+	var resObj common.ResObj
 	resObj.GetSuccessObj(0, "查询成功", obj)
 	this.Data["json"] = &resObj
 	this.ServeJSON()
