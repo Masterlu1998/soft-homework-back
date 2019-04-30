@@ -5,7 +5,7 @@ import (
 )
 
 type SecondHouse struct {
-	HouseId         int     `orm:"pk;auto" json:"houseId"`
+	HouseId         int     `orm:"pk;auto"`
 	HouseName       string  
 	HouseTotalPrice int     
 	HouseUnitPrice  int     
@@ -14,14 +14,11 @@ type SecondHouse struct {
 	HouseLng        float64 
 }
 
-func init() {
-}
-
 func GetHouseList(index int, pageSize int) []SecondHouse {
 	var secondHouses []SecondHouse
 	var count int64
 	var err error
-	qs := O.QueryTable("second_house")
+	qs := O.QueryTable(new(SecondHouse))
 	if index != 0 {
 		println(3333)
 		count, err = qs.Offset((index - 1) * pageSize).Limit(pageSize).All(&secondHouses)
