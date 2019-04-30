@@ -12,7 +12,7 @@ var (
 
 func init() {
 	orm.RegisterDataBase("default", "mysql", "root:62795828lovE@tcp(116.62.156.102:3306)/house_price?charset=utf8", 30)
-	orm.RegisterModel(new(SecondHouse), new(MonthPrice))
+	orm.RegisterModel(new(SecondHouse), new(MonthPrice), new(HouseDear))
 	O = orm.NewOrm()
 	O.Using("default")
 }

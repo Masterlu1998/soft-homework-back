@@ -57,7 +57,7 @@ func (this *HouseInfoController) Post() {
 	secondHouses := models.GetHouseList(pageIndex, pageSize)
 
 	// 返回查询结果
-	obj := map[string]interface{}{ "secondHouseList": secondHouses, "count": len(secondHouses) }
+	obj := Obj{ "secondHouseList": secondHouses, "count": len(secondHouses) }
 	resObj.GetSuccessObj(0, "查询成功", obj)
 	this.Data["json"] = &resObj
 	this.ServeJSON()
