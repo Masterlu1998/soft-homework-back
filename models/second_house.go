@@ -1,4 +1,4 @@
-package mysqlutil
+package models
 
 import (
 	"fmt"
@@ -19,12 +19,15 @@ func init() {
 
 func GetHouseList(index int, pageSize int) []SecondHouse {
 	var secondHouses []SecondHouse
+	var count int64
+	var err error
 	qs := O.QueryTable("second_house")
 	if index != 0 {
-		//
-		qs.Offset((index - 1) * pageSize).Limit(pageSize)
+		println(3333)
+		count, err = qs.Offset((index - 1) * pageSize).Limit(pageSize).All(&secondHouses)
+	} else {
+		count, err = qs.All(&secondHouses)
 	}
-	count, err := qs.All(&secondHouses)
 	if err != nil {
 		fmt.Println(err)
 		return nil
