@@ -5,13 +5,13 @@ import (
 )
 
 type SecondHouse struct {
-	HouseId         int     `orm:"pk;auto"`
-	HouseName       string  
-	HouseTotalPrice int     
-	HouseUnitPrice  int     
-	HouseArea       int     
-	HouseLat        float64 
-	HouseLng        float64 
+	HouseId         int     `orm:"pk;auto" json:"house_id"`
+	HouseName       string  `json:"house_name"`
+	HouseTotalPrice int     `json:"house_total_price"`
+	HouseUnitPrice  int     `json:"house_unit_price"`
+	HouseArea       int     `json:"house_area"`
+	HouseLat        float64 `json:"house_lat"`
+	HouseLng        float64 `json:"house_lng"`
 }
 
 func GetHouseList(index int, pageSize int) []SecondHouse {

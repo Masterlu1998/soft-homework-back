@@ -2,6 +2,10 @@ package: hzHouse
 import:
 - package: github.com/astaxie/beego
   version: ^1.11.1
+  subpackages:
+  - orm
+- package: github.com/go-sql-driver/mysql
+  version: ^1.4.1
 - package: github.com/tsuna/gohbase
   subpackages:
   - hrpc

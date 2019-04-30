@@ -5,8 +5,8 @@ import (
 )
 
 type MonthPrice struct {
-	Month int `orm:"pk;auto"`
-	UnitPrice int 
+	Month int `orm:"pk;auto" json:"month"`
+	UnitPrice int `json:"unit_price"`
 }
 
 func FindMonthTrend(month int) []MonthPrice {
