@@ -22,3 +22,18 @@ func GetHouseList(index int, pageSize int) ([]SecondHouse, error) {
 	}
 	return secondHouses, err
 }
+
+func GetHouseOrderList(order int) ([]SecondHouse, error) {
+	qs := O.QueryTable(new(SecondHouse))
+	var results []SecondHouse
+	var err error
+	if order == -1 {
+		_, err = qs.OrderBy("-house_unit_price").All(&results)
+	} else {
+		_, err = qs.OrderBy("house_unit_price").All(&results)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
+}

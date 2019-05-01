@@ -3,10 +3,10 @@ package controllers
 import (
 	"hzHouse/common"
 	"hzHouse/models"
-	
-	// "encoding/json"
-	"github.com/astaxie/beego"
+
 	"strconv"
+
+	"github.com/astaxie/beego"
 )
 
 type IncreaseOrderController struct {
@@ -36,26 +36,26 @@ func (this *IncreaseOrderController) Post() {
 			break
 		}
 	}
-	
+
 	// 分析数据
 	sepData := groupSearchObj["9"]
 	novData := groupSearchObj["11"]
 	type finalResult struct {
-		HouseArea int
-		DealNumIncrease float64
-		PriceIncrease float64
+		HouseArea       int     `json:"house_area"`
+		DealNumIncrease float64 `json:"deal_num_increase"`
+		PriceIncrease   float64 `json:"price_increase"`
 	}
 	finalResults := make([]finalResult, 0, 10)
 	for houseArea := 0; houseArea < 10; houseArea++ {
 		dealNumIncrease := common.CalculateIncrement(sepData[houseArea].HouseDearNumber, novData[houseArea].HouseDearNumber)
 		priceIncrease := common.CalculateIncrement(sepData[houseArea].HouseUnitPrice, novData[houseArea].HouseUnitPrice)
-		item := finalResult{ HouseArea: houseArea, DealNumIncrease: dealNumIncrease, PriceIncrease: priceIncrease }
+		item := finalResult{HouseArea: houseArea, DealNumIncrease: dealNumIncrease, PriceIncrease: priceIncrease}
 		finalResults = append(finalResults, item)
 	}
 
 	// 返回响应
-	obj := common.Obj{ "increaseList": finalResults }
+	obj := common.Obj{"increaseList": finalResults}
 	resObj.GetSuccessObj(common.SearchSuccess.Code, common.SearchSuccess.Message, obj)
 	this.Data["json"] = resObj
 	this.ServeJSON()
-} 
+}

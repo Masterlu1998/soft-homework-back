@@ -21,11 +21,12 @@ type ResInfo struct {
 
 // 正确返回
 var (
-	SearchSuccess = ResInfo{ Code: 100, Message: "查询成功" }
+	SearchSuccess = ResInfo{Code: 100, Message: "查询成功"}
 )
 
 // 错误返回
 var (
-	SearchFailed    = ResInfo{ Code: -101, Message: "查询失败" }
-	ParseJSONFailed = ResInfo{ Code: -102, Message: "JSON解析失败" }
+	SearchFailed    = ResInfo{Code: -101, Message: "查询失败"}
+	ParseJSONFailed = ResInfo{Code: -102, Message: "JSON解析失败"}
+	ReqParamInvalid = ResInfo{Code: -103, Message: "非法入参"}
 )

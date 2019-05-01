@@ -15,8 +15,8 @@ type HouseDear struct {
 
 type SearchResultInCh struct {
 	Results []HouseDear
-	Month int
-	Err error
+	Month   int
+	Err     error
 }
 
 func FindDealAmountByMonth(month int, resultCh chan SearchResultInCh) {
@@ -25,10 +25,20 @@ func FindDealAmountByMonth(month int, resultCh chan SearchResultInCh) {
 	_, err := qs.Filter("house_dear_month", month).OrderBy("house_area").All(&results)
 	if err != nil {
 		fmt.Println(err)
-		result := SearchResultInCh{ Err: err }
+		result := SearchResultInCh{Err: err}
 		resultCh <- result
 		return
 	}
-	result := SearchResultInCh{ Results: results, Month: month }
+	result := SearchResultInCh{Results: results, Month: month}
 	resultCh <- result
+}
+
+func GetDealAmountListInNov() ([]HouseDear, error) {
+	qs := O.QueryTable(new(HouseDear))
+	var results []HouseDear
+	_, err := qs.Filter("house_dear_month", 11).OrderBy("-house_unit_price").All(&results)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
 }
