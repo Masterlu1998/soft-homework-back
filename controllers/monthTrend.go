@@ -9,8 +9,6 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type Obj map[string]interface{}
-
 type MonthTrendController struct {
 	beego.Controller
 }
@@ -25,7 +23,7 @@ func (this *MonthTrendController) Post() {
 	}
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &reqObj); err != nil {
 		fmt.Println(err)
-		resObj.GetErrorObj(-1, "解析请求失败", err)
+		resObj.GetErrorObj(common.ParseJSONFailed.Code, common.ParseJSONFailed.Message, err)
 		this.Data["json"] = resObj
 		this.ServeJSON()
 		return
@@ -33,9 +31,17 @@ func (this *MonthTrendController) Post() {
 	month := reqObj.Month
 
 	// 查询数据库
-	results := models.FindMonthTrend(month)
-	obj := Obj{ "monthThreadList": results }
-	resObj.GetSuccessObj(0, "查询成功", obj)
+	results, err := models.FindMonthTrend(month)
+	if err != nil {
+		resObj.GetErrorObj(common.SearchFailed.Code, common.SearchFailed.Message, err)
+		this.Data["json"] = resObj
+		this.ServeJSON()
+		return
+	}
+
+	// 返回响应
+	obj := common.Obj{ "monthThreadList": results }
+	resObj.GetSuccessObj(common.SearchSuccess.Code, common.SearchSuccess.Message, obj)
 	this.Data["json"] = resObj
 	this.ServeJSON()
 }

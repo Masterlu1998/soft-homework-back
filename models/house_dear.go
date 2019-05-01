@@ -1,5 +1,9 @@
 package models
 
+import (
+	"fmt"
+)
+
 type HouseDear struct {
 	HouseId         int    `orm:"pk;auto" json:"house_id"`
 	HouseAreaName   string `json:"house_area_name"`
@@ -12,12 +16,19 @@ type HouseDear struct {
 type SearchResultInCh struct {
 	Results []HouseDear
 	Month int
+	Err error
 }
 
 func FindDealAmountByMonth(month int, resultCh chan SearchResultInCh) {
 	qs := O.QueryTable(new(HouseDear))
 	var results []HouseDear
-  qs.Filter("house_dear_month", month).All(&results)
+	_, err := qs.Filter("house_dear_month", month).All(&results)
+	if err != nil {
+		fmt.Println(err)
+		result := SearchResultInCh{ Err: err }
+		resultCh <- result
+		return
+	}
 	result := SearchResultInCh{ Results: results, Month: month }
 	resultCh <- result
 }

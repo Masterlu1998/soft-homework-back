@@ -16,16 +16,16 @@ type HouseController struct {
 
 func (this *HouseController) Post() {
 	scanResults, err := hbaseutil.ScanHousePrice()
-	var obj map[string]interface{}
+	var obj common.Obj
 	var resObj common.ResObj
 	if err != nil {
-		resObj.GetErrorObj(-1, "查询失败", err)
+		resObj.GetErrorObj(common.SearchFailed.Code, common.SearchFailed.Message, err)
 		this.Data["json"] = &resObj
 		this.ServeJSON()
 		return
 	}
-	obj = map[string]interface{}{"resultList": scanResults}
-	resObj.GetSuccessObj(0, "查询成功", obj)
+	obj = common.Obj{"resultList": scanResults}
+	resObj.GetSuccessObj(common.SearchSuccess.Code, common.SearchSuccess.Message, obj)
 	this.Data["json"] = &resObj
 	this.ServeJSON()
 }
@@ -46,7 +46,7 @@ func (this *HouseInfoController) Post() {
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &reqObj)
 	if err != nil {
 		fmt.Println(err)
-		resObj.GetErrorObj(-1, "解析请求失败", err)
+		resObj.GetErrorObj(common.ParseJSONFailed.Code, common.ParseJSONFailed.Message, err)
 		this.Data["json"] = &resObj
 		this.ServeJSON()
 		return
@@ -54,11 +54,17 @@ func (this *HouseInfoController) Post() {
 	pageSize, pageIndex := reqObj.PageSize, reqObj.PageIndex
 
 	// 调用数据库函数查询信息
-	secondHouses := models.GetHouseList(pageIndex, pageSize)
+	secondHouses, err := models.GetHouseList(pageIndex, pageSize)
+	if err != nil {
+		resObj.GetErrorObj(common.SearchFailed.Code, common.SearchFailed.Message, err)
+		this.Data["json"] = resObj
+		this.ServeJSON()
+		return
+	}
 
 	// 返回查询结果
-	obj := Obj{ "secondHouseList": secondHouses, "count": len(secondHouses) }
-	resObj.GetSuccessObj(0, "查询成功", obj)
+	obj := common.Obj{ "secondHouseList": secondHouses, "count": len(secondHouses) }
+	resObj.GetSuccessObj(common.SearchSuccess.Code, common.SearchSuccess.Message, obj)
 	this.Data["json"] = &resObj
 	this.ServeJSON()
 }

@@ -9,14 +9,16 @@ type MonthPrice struct {
 	UnitPrice int `json:"unit_price"`
 }
 
-func FindMonthTrend(month int) []MonthPrice {
+func FindMonthTrend(month int) ([]MonthPrice, error) {
 	var searchResult []MonthPrice
+	var err error
+
 	qs := O.QueryTable(new(MonthPrice))
 	fmt.Println(month)
 	if month == 0 {
-		qs.All(&searchResult)
+		_, err = qs.All(&searchResult)
 	} else {
-		qs.Filter("month", month).All(&searchResult)
+		_, err = qs.Filter("month", month).All(&searchResult)
 	}
-	return searchResult
+	return searchResult, err
 }

@@ -3,10 +3,10 @@ package controllers
 import (
 	"hzHouse/common"
 	"hzHouse/models"
-	
-	"strconv"
+
 	"encoding/json"
 	"github.com/astaxie/beego"
+	"strconv"
 )
 
 type DealAmountController struct {
@@ -20,10 +20,10 @@ func (this *DealAmountController) Post() {
 	// 解析请求参数
 	var reqObj struct {
 		StartMonth int
-		EndMonth int
+		EndMonth   int
 	}
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &reqObj); err != nil {
-		resObj.GetErrorObj(-1, "入参解析错误", err)
+		resObj.GetErrorObj(common.ParseJSONFailed.Code, common.ParseJSONFailed.Message, err)
 		this.Data["json"] = resObj
 		this.ServeJSON()
 		return
@@ -36,7 +36,7 @@ func (this *DealAmountController) Post() {
 	}
 
 	// 返回结果
-	obj := Obj{}
+	obj := common.Obj{}
 	count := reqObj.EndMonth - reqObj.StartMonth + 1
 	for val := range resultCh {
 		count--
@@ -44,8 +44,16 @@ func (this *DealAmountController) Post() {
 		if count == 0 {
 			break
 		}
+
+		// 判断是否有错误
+		if val.Err != nil {
+			resObj.GetErrorObj(common.SearchFailed.Code, common.SearchFailed.Message, val.Err)
+			this.Data["json"] = resObj
+			this.ServeJSON()
+			return
+		}
 	}
-	resObj.GetSuccessObj(0, "查询成功", obj)
+	resObj.GetSuccessObj(common.SearchSuccess.Code, common.SearchSuccess.Message, obj)
 	this.Data["json"] = resObj
 	this.ServeJSON()
 }
