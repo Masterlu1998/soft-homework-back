@@ -1,13 +1,13 @@
 package common
 
-//---------------------- 封装一些统一的类型或结构体
+// --------- 封装一些统一的类型或结构体 ---------
 
 // ResObj : 统一返回结构体
 type ResObj struct {
 	Code   int    `json:"code"`
 	Prompt string `json:"prompt"`
 	Obj    Obj    `json:"obj"`
-	Err    string  `json:"err"`
+	Err    string `json:"err"`
 }
 
 // Obj : 统一数据格式
@@ -21,11 +21,11 @@ type ResInfo struct {
 
 // 正确返回
 var (
-	SearchSuccess = ResInfo{Code: 100, Message: "查询成功"}
+	SearchSuccess = ResInfo{ Code: 100, Message: "查询成功" }
 )
 
 // 错误返回
 var (
-	SearchFailed    = ResInfo{Code: -101, Message: "查询失败"}
-	ParseJSONFailed = ResInfo{Code: -102, Message: "JSON解析失败"}
+	SearchFailed    = ResInfo{ Code: -101, Message: "查询失败" }
+	ParseJSONFailed = ResInfo{ Code: -102, Message: "JSON解析失败" }
 )

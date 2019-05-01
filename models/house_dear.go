@@ -22,7 +22,7 @@ type SearchResultInCh struct {
 func FindDealAmountByMonth(month int, resultCh chan SearchResultInCh) {
 	qs := O.QueryTable(new(HouseDear))
 	var results []HouseDear
-	_, err := qs.Filter("house_dear_month", month).All(&results)
+	_, err := qs.Filter("house_dear_month", month).OrderBy("house_area").All(&results)
 	if err != nil {
 		fmt.Println(err)
 		result := SearchResultInCh{ Err: err }
