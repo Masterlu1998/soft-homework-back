@@ -48,7 +48,6 @@ func (this *PriceOrderController) Post() {
 			this.ServeJSON()
 			return
 		}
-		break
 	case 2:
 		// 房子总价倒序排名
 		results, err = models.GetHouseOrderList(mysqlDescCode)
@@ -58,7 +57,6 @@ func (this *PriceOrderController) Post() {
 			this.ServeJSON()
 			return
 		}
-		break
 	case 3:
 		// 房子总价正序排名
 		results, err = models.GetHouseOrderList(mysqlAscCode)
@@ -68,7 +66,6 @@ func (this *PriceOrderController) Post() {
 			this.ServeJSON()
 			return
 		}
-		break
 	default:
 		resObj.GetErrorObj(common.ReqParamInvalid.Code, common.ReqParamInvalid.Message, errors.New(invalidParamMessageStr))
 		this.Data["json"] = resObj
