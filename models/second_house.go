@@ -16,9 +16,9 @@ func GetHouseList(index int, pageSize int) ([]SecondHouse, error) {
 	qs := O.QueryTable(new(SecondHouse))
 	if index != 0 {
 		println(3333)
-		_, err = qs.Offset((index - 1) * pageSize).Limit(pageSize).All(&secondHouses)
+		_, err = qs.Limit(pageSize, (index - 1) * pageSize).All(&secondHouses)
 	} else {
-		_, err = qs.All(&secondHouses)
+		_, err = O.Raw("SELECT * FROM second_house").QueryRows(&secondHouses)
 	}
 	return secondHouses, err
 }
